@@ -1,11 +1,11 @@
-.card {
+#card-container {
   justify-content: center;
   padding: 20px;
   display: grid;
   grid-template-columns: auto auto auto auto auto;
 }
 
-.inner-card {
+.app-card {
   border: 1px solid #395284;
   border-radius: 10px;
   padding: 15px;
@@ -18,7 +18,7 @@
   font-family: sans-serif;
 }
 
-.inner-card:hover {
+.app-card:hover {
   background-color: #F0FBFC;
   transform: scale(1.1);
 }
