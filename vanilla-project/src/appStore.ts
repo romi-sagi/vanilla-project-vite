@@ -14,7 +14,7 @@ interface Application {
 const applications: Application[] = mock;
 
 applications.forEach(app => {
-  const appsContainer = document.getElementById("card-container");
+  const appsContainer = document.getElementById("apps-container");
 
   if (appsContainer) {
     const appCard: HTMLDivElement = document.createElement('div');
