@@ -1,0 +1,16 @@
+#app-description-container {
+    padding: 0 100px;
+}
+
+.description-text {
+    width: 75%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.table {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 70px;
+}
