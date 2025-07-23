@@ -6,6 +6,7 @@
     width: 75%;
     margin: 0 auto;
     text-align: center;
+    font-family: sans-serif;
 }
 
 .table {
@@ -13,4 +14,9 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 70px;
+}
+
+li {
+    font-family: sans-serif;
+    margin-top: 5px;
 }
