@@ -4,16 +4,32 @@
   <link rel="stylesheet" href="./src/style/loader.css">
   <link rel="stylesheet" href="./src/style/header.css">
   <link rel="stylesheet" href="./src/style/button.css">
+  <link rel="stylesheet" href="./src/style/appDescription.css">
+  <script type="module" src="./src/ts/appDescription.ts"></script>
 </head>
 
 <body>
-  <h1>Application Description</h1>
-  <div id="loader"></div>
   <div id="app-description-container">
-    <script type="module" src="./src/ts/appDescription.ts"></script>
+    <h1>Application Description</h1>
+    <div id="loader"></div>
+    <div class="app-details-container">
+      <img id="icon"></img>
+      <h3 id="app-name"></h3>
+      <div id="app-description" class="description-text"></div>
+    </div>
+    <div class="additional-details-container">
+      <div id="key-features-container">
+        <h4>Key Features: </h4>
+      </div>
+      <div id="screenshots-container">
+        <h4>screenshots: </h4>
+      </div>
+    </div>
   </div>
-  <button id="back-button">&larr; Back To Applications</button>
-  <script type="module" src="./src/ts/backButton.ts"></script>
+  <button id="back-button-container">
+    <img id="back-button-icon" src="/icons/back-button.png"></img>
+    <div>Back To Applications</div>
+  </button>
 </body>
 
 </html>

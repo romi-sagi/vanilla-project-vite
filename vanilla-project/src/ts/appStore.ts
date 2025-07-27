@@ -1,18 +1,9 @@
 import '../style/card.css';
 import '../style/img.css';
 import { handleDataError } from '../utils/dataErrorHandler';
-import { createDivElement, createImageElement } from './createElements';
+import { createElement } from '../utils/createElements';
+import type { Application } from '../models/ApplicationModel';
 
-interface Application {
-  id: number;
-  name: string;
-  icon: string;
-  description: string;
-  keyFeatures: string[];
-  screenshots: string[];
-}
-
-const noTextContext = '';
 const loader = document.getElementById('loader') as HTMLDivElement;
 const appsContainer = document.getElementById("apps-container") as HTMLDivElement;
 
@@ -30,13 +21,13 @@ const fetchData = async () => {
 
     applications.forEach(app => {
       if (appsContainer) {
-        const appCard: HTMLDivElement = createDivElement(noTextContext, 'app-card');
+        const appCard: HTMLDivElement = createElement('div', { className: 'app-card' });
         appCard.addEventListener("click", function () {
           window.location.href = `appDescription?id=${app.id}`
         });
 
-        const appIcon: HTMLImageElement = createImageElement(app.icon, 'icon');
-        const appName: HTMLDivElement = createDivElement(app.name);
+        const appIcon: HTMLImageElement  = createElement('img', { src: app.icon, id: 'icon' });
+        const appName: HTMLDivElement = createElement('div', { textContent: app.name });
 
         appCard.appendChild(appIcon);
         appCard.appendChild(appName);

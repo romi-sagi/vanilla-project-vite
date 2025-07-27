@@ -1,15 +1,12 @@
-.icon {
+#icon {
     height: 50px;
     width: 50px;
     border-radius: 30%;
-    margin: 0 auto;
-    display: flex;
 }
 
 .screenshot {
-    width: 100%;
-    height: 230px;
-    object-fit: cover;
+    width: 70%;
+    height: 250px;
     margin-left: 20px;
     display: inline-block;
     border-radius: 10px;

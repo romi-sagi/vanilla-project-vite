@@ -1,22 +1,30 @@
 #app-description-container {
     padding: 0 100px;
-}
-
-.description-text {
-    width: 75%;
-    margin: 0 auto;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
     font-family: sans-serif;
 }
 
-.table {
+.app-details-container {
+    height: 150px;
+    justify-items: center;
+    text-align: center;
+}
+
+.additional-details-container {
+    height: 250px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 70px;
+}
+
+#key-features-container {
+    flex: 0.7;
+}
+
+#screenshots-container {
+    flex: 1;
 }
 
 li {
-    font-family: sans-serif;
     margin-top: 5px;
 }
