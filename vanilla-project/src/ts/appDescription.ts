@@ -1,7 +1,7 @@
 import '../style/img.css';
 import '../style/appDescription.css';
 import '../style/header.css';
-import { handleDataError } from '../utils/dataErrorHandler';
+import { handleFetchFailedError } from '../utils/dataErrorHandler';
 import { createElement } from '../utils/createElements';
 import type { Application } from '../models/ApplicationModel';
 
@@ -25,7 +25,7 @@ const fetchApplicationsData = async () => {
 
             return app;
         } catch (error) {
-            handleDataError(error, appDescriptionContainer)
+            handleFetchFailedError(error, appDescriptionContainer)
         } finally {
             loader.style.display = 'none';
         }
