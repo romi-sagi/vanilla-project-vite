@@ -1,6 +1,6 @@
 import '../style/card.css';
 import '../style/img.css';
-import { handleDataError } from '../utils/dataErrorHandler';
+import { handleFetchFailedError } from '../utils/dataErrorHandler';
 import { createElement } from '../utils/createElements';
 import type { Application } from '../models/ApplicationModel';
 
@@ -26,7 +26,7 @@ const fetchData = async () => {
           window.location.href = `appDescription?id=${app.id}`
         });
 
-        const appIcon: HTMLImageElement  = createElement('img', { src: app.icon, id: 'icon' });
+        const appIcon: HTMLImageElement = createElement('img', { src: app.icon, id: 'icon' });
         const appName: HTMLDivElement = createElement('div', { textContent: app.name });
 
         appCard.appendChild(appIcon);
@@ -37,7 +37,7 @@ const fetchData = async () => {
     })
 
   } catch (error) {
-    handleDataError(error, appsContainer)
+    handleFetchFailedError(error, appsContainer)
   } finally {
     loader.style.display = 'none';
   }
