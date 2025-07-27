@@ -1,6 +1,6 @@
 import { createElement } from "./createElements";
 
-export const handleDataError = (error: any, container: HTMLElement) => {
+export const handleFetchFailedError = (error: any, container: HTMLElement) => {
     console.error('Fetch error:', error);
 
     if (container) {
