@@ -1,94 +1,90 @@
-import '../style/img.css';
-import '../style/appDescription.css';
-import '../style/header.css';
-import { handleFetchFailedError } from '../utils/dataErrorHandler';
-import { createElement } from '../utils/createElements';
-import type { Application } from '../models/ApplicationModel';
+import "../style/appDescription.css";
+import "../style/header.css";
+import "../style/img.css";
+import { createElement } from "../utils/createElements";
+import { fetchApplicationById } from "./api";
 
-const params = new URLSearchParams(window.location.search);
-const appId = params.get('id');
-const appDescriptionContainer = document.getElementById("app-description-container");
-const loader = document.getElementById('loader');
+const appIcon = document.getElementById("icon") as HTMLImageElement;
+const appName = document.getElementById("app-name") as HTMLDivElement;
+const appDescription = document.getElementById(
+  "app-description"
+) as HTMLDivElement;
+const featuresContainer = document.getElementById(
+  "key-features-container"
+) as HTMLDivElement;
+const screenshotsContainer = document.getElementById(
+  "screenshots-container"
+) as HTMLDivElement;
+const backButton = document.getElementById(
+  "back-button-container"
+) as HTMLButtonElement;
 
-const fetchApplicationsData = async () => {
-    if (loader && appDescriptionContainer) {
-        loader.style.display = 'inline-block';
+const getApplication = async (appId: string) => {
+  try {
+    // todo clearError
+    // todo setLoading = true
 
-        try {
-            const response = await fetch(`http://localhost:3000/applications/${appId}`);
+    return await fetchApplicationById(appId);
+  } catch (e) {
+    // todo set error = e.message
 
-            if (!response.ok) {
-                throw new Error(`Fetching application data failed with status code ${response.status} ${response.statusText}`);
-            }
+    throw e;
+  } finally {
+    // todo setLoading = false
+  }
+};
 
-            const app = await response.json();
+const addKeyFeatures = (features: string[]) => {
+  features.forEach((feature) => {
+    const featureEl = createElement("li", { textContent: feature });
 
-            return app;
-        } catch (error) {
-            handleFetchFailedError(error, appDescriptionContainer)
-        } finally {
-            loader.style.display = 'none';
-        }
-    }
-}
+    featuresContainer?.appendChild(featureEl);
+  });
+};
 
-const updateAppIcon = (app: Application) => {
-    const appIcon = document.getElementById('icon') as HTMLImageElement;
-    if (appIcon) appIcon.src = app.icon;
-}
+const addScreenshots = (screenshots: string[]) => {
+  screenshots.forEach((screenshot) => {
+    const appScreenshot = createElement("img", {
+      src: screenshot,
+      className: "screenshot",
+    });
 
-const updateAppName = (app: Application) => {
-    const appName = document.getElementById("app-name");
-    if (appName) appName.textContent = app.name;
-}
+    screenshotsContainer.appendChild(appScreenshot);
+  });
+};
 
-const updateAppDescription = (app: Application) => {
-    const appIcon = document.getElementById('app-description');
-    if (appIcon) appIcon.textContent = app.description;
-}
+const addOnBackListener = () => {
+  backButton.addEventListener("click", () => {
+    window.location.href = `/`;
+  });
+};
 
-const updateAppKeyFeatures = async (app: Application) => {
-    const featuresContainer = document.getElementById('key-features-container');
-    const keyFeatures = app.keyFeatures;
+const getAppId = () => {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("id");
+};
 
-    if (featuresContainer) {
-        keyFeatures.forEach(async feature => {
-            const appKeyFeature = await createElement('li', { textContent: feature });
-            featuresContainer.appendChild(appKeyFeature);
-        })
-    }
-}
+const renderApplication = async (appId: string) => {
+  const app = await getApplication(appId);
+  const { description, icon, screenshots, name, keyFeatures } = app;
 
-const updateAppScreenshots = async (app: Application) => {
-    const screenshotsContainer = document.getElementById('screenshots-container');
-    const screenshots = app.screenshots;
+  appIcon.src = icon;
+  appName.textContent = name;
+  appDescription.textContent = description;
+  addKeyFeatures(keyFeatures);
+  addScreenshots(screenshots);
+};
 
-    if (screenshotsContainer) {
-        screenshots.forEach(async screen => {
-            const appScreenshot = await createElement('img', { src: screen, className: 'screenshot' });
-            screenshotsContainer.appendChild(appScreenshot);
-        })
-    }
-}
+const init = async () => {
+  const appId = getAppId();
 
-const clickOnBackButton = () => {
-    const backButton = document.getElementById("back-button-container");
-    if (backButton) {
-        backButton.addEventListener('click', function () {
-            window.location.href = `/`
-        });
-    }
-}
+  if (appId) {
+    // todo: handle thrown error
+    renderApplication(appId);
+    addOnBackListener();
+  } else {
+    // navigate to home screen
+  }
+};
 
-const updateDomByFetchData = async () => {
-    const appDetails = await fetchApplicationsData();
-    updateAppIcon(appDetails);
-    updateAppName(appDetails);
-    updateAppDescription(appDetails);
-    updateAppKeyFeatures(appDetails);
-    updateAppScreenshots(appDetails);
-
-    clickOnBackButton();
-}
-
-updateDomByFetchData();
+init();
