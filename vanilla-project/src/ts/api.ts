@@ -1,4 +1,4 @@
-import type { Application } from "../models/applicationModel";
+import type { Application } from "../models/ApplicationModel";
 
 export const fetchApplicationById = async (
   id: string
@@ -7,7 +7,7 @@ export const fetchApplicationById = async (
 
   if (!response.ok) {
     throw new Error(
-      `Fetching application data failed with status code ${response.status} ${response.statusText}`
+      `Fetching application description failed with status code ${response.status} ${response.statusText}`
     );
   }
 

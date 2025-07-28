@@ -2,89 +2,110 @@ import "../style/appDescription.css";
 import "../style/header.css";
 import "../style/img.css";
 import { createElement } from "../utils/createElements";
+import { addFailedLoadApplicationPlaceholder } from "../utils/ErrorHandler";
 import { fetchApplicationById } from "./api";
 
+const appDescriptionContainer = document.getElementById("app-description-container") as HTMLDivElement;
 const appIcon = document.getElementById("icon") as HTMLImageElement;
 const appName = document.getElementById("app-name") as HTMLDivElement;
 const appDescription = document.getElementById(
-  "app-description"
+    "app-description"
 ) as HTMLDivElement;
 const featuresContainer = document.getElementById(
-  "key-features-container"
+    "key-features-container"
 ) as HTMLDivElement;
 const screenshotsContainer = document.getElementById(
-  "screenshots-container"
+    "screenshots-container"
 ) as HTMLDivElement;
 const backButton = document.getElementById(
-  "back-button-container"
+    "back-button-container"
 ) as HTMLButtonElement;
+const setLoading = document.getElementById("loader") as HTMLDivElement;
 
 const getApplication = async (appId: string) => {
-  try {
-    // todo clearError
-    // todo setLoading = true
+    let errorMessage = '';
+    try {
+        appDescriptionContainer.style.display = 'none';
+        setLoading.style.display = 'block';
 
-    return await fetchApplicationById(appId);
-  } catch (e) {
-    // todo set error = e.message
+        const application = await fetchApplicationById(appId);
+        appDescriptionContainer.style.display = 'block';
 
-    throw e;
-  } finally {
-    // todo setLoading = false
-  }
+        return application;
+    } catch (e) {
+        if (e instanceof Error) {
+            errorMessage = e.message;
+        } else {
+            errorMessage = 'An unknown error occurred';
+        }
+        throw errorMessage;
+
+    } finally {
+        setLoading.style.display = 'none';
+    }
 };
 
 const addKeyFeatures = (features: string[]) => {
-  features.forEach((feature) => {
-    const featureEl = createElement("li", { textContent: feature });
+    features.forEach((feature) => {
+        const featureEl = createElement("li", { textContent: feature });
 
-    featuresContainer?.appendChild(featureEl);
-  });
+        featuresContainer?.appendChild(featureEl);
+    });
 };
 
 const addScreenshots = (screenshots: string[]) => {
-  screenshots.forEach((screenshot) => {
-    const appScreenshot = createElement("img", {
-      src: screenshot,
-      className: "screenshot",
-    });
+    screenshots.forEach((screenshot) => {
+        const appScreenshot = createElement("img", {
+            src: screenshot,
+            className: "screenshot",
+        });
 
-    screenshotsContainer.appendChild(appScreenshot);
-  });
+        screenshotsContainer.appendChild(appScreenshot);
+    });
 };
 
+const backToHomeScreen = () => {
+    const homePageHref = window.location.href = `/`;
+
+    return homePageHref;
+}
+
 const addOnBackListener = () => {
-  backButton.addEventListener("click", () => {
-    window.location.href = `/`;
-  });
+    backButton.addEventListener("click", () => {
+        backToHomeScreen();
+    });
 };
 
 const getAppId = () => {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("id");
+    const params = new URLSearchParams(window.location.search);
+    return params.get("id");
 };
 
 const renderApplication = async (appId: string) => {
-  const app = await getApplication(appId);
-  const { description, icon, screenshots, name, keyFeatures } = app;
+    try {
+        const app = await getApplication(appId);
+        const { description, icon, screenshots, name, keyFeatures } = app;
 
-  appIcon.src = icon;
-  appName.textContent = name;
-  appDescription.textContent = description;
-  addKeyFeatures(keyFeatures);
-  addScreenshots(screenshots);
+        appIcon.src = icon;
+        appName.textContent = name;
+        appDescription.textContent = description;
+        addKeyFeatures(keyFeatures);
+        addScreenshots(screenshots);
+    } catch (e) {
+        addFailedLoadApplicationPlaceholder(appDescriptionContainer);
+        throw e;
+    }
 };
 
 const init = async () => {
-  const appId = getAppId();
+    const appId = getAppId();
 
-  if (appId) {
-    // todo: handle thrown error
-    renderApplication(appId);
-    addOnBackListener();
-  } else {
-    // navigate to home screen
-  }
+    if (appId) {
+        renderApplication(appId);
+        addOnBackListener();
+    } else {
+        backToHomeScreen();
+    }
 };
 
 init();

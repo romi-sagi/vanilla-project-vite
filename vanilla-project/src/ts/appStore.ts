@@ -1,6 +1,6 @@
 import '../style/card.css';
 import '../style/img.css';
-import { handleFetchFailedError } from '../utils/dataErrorHandler';
+import { addFailedLoadApplicationPlaceholder } from '../utils/ErrorHandler';
 import { createElement } from '../utils/createElements';
 import type { Application } from '../models/ApplicationModel';
 
@@ -37,7 +37,7 @@ const fetchData = async () => {
     })
 
   } catch (error) {
-    handleFetchFailedError(error, appsContainer)
+    addFailedLoadApplicationPlaceholder(appsContainer)
   } finally {
     loader.style.display = 'none';
   }
