@@ -5,7 +5,7 @@
     font-family: sans-serif;
 }
 
-.app-details-container {
+.app-info-container {
     height: 150px;
     justify-items: center;
     text-align: center;
@@ -18,13 +18,20 @@
 }
 
 #key-features-container {
-    flex: 0.7;
+    flex: 1;
 }
 
 #screenshots-container {
-    flex: 1;
+    flex: 2;
 }
 
 li {
     margin-top: 5px;
+}
+
+.get-application-error {
+    margin-top: 64px;
+    display: flex;
+    justify-content: center;
+    font-family: sans-serif;
 }
