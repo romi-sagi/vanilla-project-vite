@@ -2,7 +2,7 @@ import "../style/appDescription.css";
 import "../style/header.css";
 import "../style/img.css";
 import { createElement } from "../utils/createElements";
-import { addFailedLoadApplicationPlaceholder } from "../utils/ErrorHandler";
+import { createFailedGetApplicationDetailsError } from "../utils/errorHandler";
 import { fetchApplicationById } from "./api";
 
 const appDescriptionContainer = document.getElementById("app-description-container") as HTMLDivElement;
@@ -20,30 +20,31 @@ const screenshotsContainer = document.getElementById(
 const backButton = document.getElementById(
     "back-button-container"
 ) as HTMLButtonElement;
-const setLoading = document.getElementById("loader") as HTMLDivElement;
+const loader = document.getElementById("loader") as HTMLDivElement;
 
 const getApplication = async (appId: string) => {
-    let errorMessage = '';
     try {
         appDescriptionContainer.style.display = 'none';
-        setLoading.style.display = 'block';
+        loader.style.display = 'block';
 
         const application = await fetchApplicationById(appId);
         appDescriptionContainer.style.display = 'block';
 
         return application;
     } catch (e) {
-        if (e instanceof Error) {
-            errorMessage = e.message;
-        } else {
-            errorMessage = 'An unknown error occurred';
-        }
-        throw errorMessage;
+        const errMsg = e instanceof Error ? e.message : 'unknown error';
 
+        throw new Error(`getApplication error: ${errMsg}`);
     } finally {
-        setLoading.style.display = 'none';
+        loader.style.display = 'none';
     }
 };
+
+const addFailedGetApplicationDetailsPlaceHolder = () => {
+    const errEl = createFailedGetApplicationDetailsError();
+    document.body.appendChild(errEl);
+    alert("Please try again.")
+}
 
 const addKeyFeatures = (features: string[]) => {
     features.forEach((feature) => {
@@ -64,15 +65,13 @@ const addScreenshots = (screenshots: string[]) => {
     });
 };
 
-const backToHomeScreen = () => {
-    const homePageHref = window.location.href = `/`;
-
-    return homePageHref;
+const gobackToHomeScreen = () => {
+    window.location.href = `/`;
 }
 
 const addOnBackListener = () => {
     backButton.addEventListener("click", () => {
-        backToHomeScreen();
+        gobackToHomeScreen();
     });
 };
 
@@ -92,8 +91,7 @@ const renderApplication = async (appId: string) => {
         addKeyFeatures(keyFeatures);
         addScreenshots(screenshots);
     } catch (e) {
-        addFailedLoadApplicationPlaceholder(appDescriptionContainer);
-        throw e;
+        addFailedGetApplicationDetailsPlaceHolder();
     }
 };
 
@@ -104,7 +102,7 @@ const init = async () => {
         renderApplication(appId);
         addOnBackListener();
     } else {
-        backToHomeScreen();
+        gobackToHomeScreen();
     }
 };
 

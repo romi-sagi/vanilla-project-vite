@@ -1,13 +1,14 @@
 import type { Application } from "../models/ApplicationModel";
+import { applicationsApiUrl } from "../constants/apiConstants";
 
 export const fetchApplicationById = async (
   id: string
 ): Promise<Application> => {
-  const response = await fetch(`http://localhost:3000/applications/${id}`);
+  const response = await fetch(`${applicationsApiUrl}/${id}`);
 
   if (!response.ok) {
     throw new Error(
-      `Fetching application description failed with status code ${response.status} ${response.statusText}`
+      `Failed to fetch application description by ID from ${response.url} — Status: ${response.status} (${response.statusText})`
     );
   }
 
