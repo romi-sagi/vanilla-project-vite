@@ -1,0 +1,16 @@
+#back-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    width: 165px;
+    height: 30px;
+    border-radius: 100px;
+    margin-left: 60px;
+    gap: 5px;
+}
+
+#back-button-icon {
+    height: 8px;
+    width: 12px;
+}

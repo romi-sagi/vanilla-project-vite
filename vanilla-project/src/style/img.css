@@ -1,6 +1,13 @@
-.image {
-    align-items: center;
+#icon {
     height: 50px;
     width: 50px;
-    border-radius: 50%;
+    border-radius: 30%;
+}
+
+.screenshot {
+    width: 70%;
+    height: 250px;
+    margin-left: 20px;
+    display: inline-block;
+    border-radius: 10px;
 }

@@ -1,0 +1,30 @@
+#app-description-container {
+    padding: 0 100px;
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+
+.app-info-container {
+    height: 150px;
+    justify-items: center;
+    text-align: center;
+}
+
+.additional-details-container {
+    height: 250px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#key-features-container {
+    flex: 1;
+}
+
+#screenshots-container {
+    flex: 2;
+}
+
+li {
+    margin-top: 5px;
+}
