@@ -28,10 +28,3 @@
 li {
     margin-top: 5px;
 }
-
-.get-application-error {
-    margin-top: 64px;
-    display: flex;
-    justify-content: center;
-    font-family: sans-serif;
-}

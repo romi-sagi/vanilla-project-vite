@@ -1,1 +1,0 @@
-export const applicationsApiUrl = 'http://localhost:3000/applications';

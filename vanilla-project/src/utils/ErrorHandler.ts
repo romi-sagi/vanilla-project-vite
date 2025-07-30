@@ -1,7 +1,13 @@
 import { createElement } from "./createElements";
 
-export const createFailedGetApplicationDetailsError = () => {
-    const errorMessage = createElement('div', { className: 'get-application-error', textContent: 'Failed to load application info. Please try again later.' });
+export const createApplicationDetailsError = () => {
+    const errorMessage = createElement('div', { className: 'error-message', textContent: 'Failed to load application details. Please try again later.' });
+
+    return errorMessage;
+}
+
+export const createApplicationsError = () => {
+    const errorMessage = createElement('div', { className: 'error-message', textContent: 'Failed to load applications. Please try again later.' });
 
     return errorMessage;
 } 

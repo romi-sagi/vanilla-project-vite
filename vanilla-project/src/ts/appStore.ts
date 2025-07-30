@@ -1,46 +1,97 @@
 import '../style/card.css';
 import '../style/img.css';
-import { createFailedGetApplicationDetailsError } from '../utils/errorHandler';
+import '../style/errorMessage.css'
 import { createElement } from '../utils/createElements';
-import type { Application } from '../models/ApplicationModel';
+import type { Application } from '../models/applicationModel';
+import { fetchAllApplications } from './api';
+import { createApplicationsError } from '../utils/errorHandler';
 
 const loader = document.getElementById('loader') as HTMLDivElement;
 const appsContainer = document.getElementById("apps-container") as HTMLDivElement;
 
-const fetchData = async () => {
-  loader.style.display = 'inline-block';
-
+const getApplications = async () => {
   try {
-    const response = await fetch('http://localhost:3000/applications');
+    appsContainer.style.display = 'none';
+    loader.style.display = 'block';
 
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-    }
+    const applications = await fetchAllApplications();
+    appsContainer.style.display = 'grid';
 
-    const applications: Application[] = await response.json();
+    return applications;
+  } catch (e) {
+    const errMsg = e instanceof Error ? e.message : 'unknown error';
 
-    applications.forEach(app => {
-      if (appsContainer) {
-        const appCard: HTMLDivElement = createElement('div', { className: 'app-card' });
-        appCard.addEventListener("click", function () {
-          window.location.href = `appDescription?id=${app.id}`
-        });
-
-        const appIcon: HTMLImageElement = createElement('img', { src: app.icon, id: 'icon' });
-        const appName: HTMLDivElement = createElement('div', { textContent: app.name });
-
-        appCard.appendChild(appIcon);
-        appCard.appendChild(appName);
-
-        appsContainer.appendChild(appCard);
-      }
-    })
-
-  } catch (error) {
-    createFailedGetApplicationDetailsError()
+    throw new Error(`getApplications error: ${errMsg}`);
   } finally {
     loader.style.display = 'none';
   }
+};
+
+const createAppCardContainer = () => {
+  const appCard = createElement('div', { className: 'app-card' });
+
+  return appCard;
 }
 
-fetchData();
+const createAppIcon = (icon: string) => {
+  const appIcon = createElement('img', { src: icon, id: 'icon' });
+
+  return appIcon;
+}
+
+const createAppName = (name: string) => {
+  const appName = createElement('div', { textContent: name });
+
+  return appName;
+}
+
+const createAppCard = (app: Application) => {
+  const appCard = createAppCardContainer();
+  const appIcon = createAppIcon(app.icon);
+  const appName = createAppName(app.name);
+
+  appCard.append(appIcon, appName);
+
+  return appCard;
+}
+
+const addOnCardClickListener = (appCard: HTMLElement, id: number) => {
+  appCard.addEventListener("click", () => {
+    window.location.href = `appDescription?id=${id}`
+  });
+};
+
+const renderAppCard = (app: Application) => {
+  const appCard = createAppCard(app);
+
+  appsContainer.append(appCard)
+
+  addOnCardClickListener(appCard, app.id);
+}
+
+const createApplicationCards = (apps: Application[]) => {
+  apps.forEach(app => {
+    renderAppCard(app);
+  })
+}
+
+const addApplicationsErrorMessage = () => {
+  const errEl = createApplicationsError();
+  document.body.appendChild(errEl);
+  alert("Please try again.")
+}
+
+const renderAllApplications = async () => {
+  try {
+    const applications = await getApplications();
+    createApplicationCards(applications)
+  } catch (e) {
+    addApplicationsErrorMessage();
+  }
+}
+
+const init = () => {
+  renderAllApplications();
+}
+
+init();
