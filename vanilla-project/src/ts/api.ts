@@ -1,18 +1,32 @@
-import type { Application } from "../models/ApplicationModel";
-import { applicationsApiUrl } from "../constants/apiConstants";
+import type { Application } from "../models/applicationModel";
+import { ServerUrl } from "../constants/apiConstants";
 
-export const fetchApplicationById = async (
-  id: string
-): Promise<Application> => {
-  const response = await fetch(`${applicationsApiUrl}/${id}`);
+export const fetchByServerUrl = async <T = Application | Application[]>(
+  url: string
+): Promise<T> => {
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(
-      `Failed to fetch application description by ID from ${response.url} — Status: ${response.status} (${response.statusText})`
+      `Failed to fetch from ${response.url} — Status: ${response.status} (${response.statusText})`
     );
   }
 
   const app = await response.json();
 
-  return app as Promise<Application>;
+  return app as Promise<T>;
 };
+
+export const fetchApplicationById = async (
+  id: string
+): Promise<Application> => {
+  const app = fetchByServerUrl<Application>(`${ServerUrl}/${id}`)
+
+  return app;
+}
+
+export const fetchAllApplications = async (): Promise<Application[]> => {
+  const applications = fetchByServerUrl<Application[]>(`${ServerUrl}`)
+
+  return applications;
+}

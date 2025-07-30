@@ -1,8 +1,9 @@
 import "../style/appDescription.css";
 import "../style/header.css";
 import "../style/img.css";
+import '../style/errorMessage.css'
 import { createElement } from "../utils/createElements";
-import { createFailedGetApplicationDetailsError } from "../utils/errorHandler";
+import { createApplicationDetailsError } from "../utils/errorHandler";
 import { fetchApplicationById } from "./api";
 
 const appDescriptionContainer = document.getElementById("app-description-container") as HTMLDivElement;
@@ -41,7 +42,7 @@ const getApplication = async (appId: string) => {
 };
 
 const addFailedGetApplicationDetailsPlaceHolder = () => {
-    const errEl = createFailedGetApplicationDetailsError();
+    const errEl = createApplicationDetailsError();
     document.body.appendChild(errEl);
     alert("Please try again.")
 }
