@@ -1,7 +1,8 @@
 import type { Application } from "../models/applicationModel";
-import { ServerUrl } from "../constants/apiConstants";
 
-export const fetchByServerUrl = async <T = Application | Application[]>(
+const serverUrl = 'http://localhost:3000/applications'
+
+export const sendRequest = async <T = Application | Application[]>(
   url: string
 ): Promise<T> => {
   const response = await fetch(url);
@@ -20,13 +21,13 @@ export const fetchByServerUrl = async <T = Application | Application[]>(
 export const fetchApplicationById = async (
   id: string
 ): Promise<Application> => {
-  const app = fetchByServerUrl<Application>(`${ServerUrl}/${id}`)
+  const app = sendRequest<Application>(`${serverUrl}/${id}`)
 
   return app;
 }
 
 export const fetchAllApplications = async (): Promise<Application[]> => {
-  const applications = fetchByServerUrl<Application[]>(`${ServerUrl}`)
+  const applications = sendRequest<Application[]>(`${serverUrl}`)
 
   return applications;
 }

@@ -55,7 +55,7 @@ const createAppCard = (app: Application) => {
   return appCard;
 }
 
-const addOnCardListener = (appCard: HTMLElement, id: number) => {
+const addOnCardClickListener = (appCard: HTMLElement, id: number) => {
   appCard.addEventListener("click", () => {
     window.location.href = `appDescription?id=${id}`
   });
@@ -66,7 +66,7 @@ const renderAppCard = (app: Application) => {
 
   appsContainer.append(appCard)
 
-  addOnCardListener(appCard, app.id);
+  addOnCardClickListener(appCard, app.id);
 }
 
 const createApplicationCards = (apps: Application[]) => {
